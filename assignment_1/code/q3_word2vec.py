@@ -15,7 +15,7 @@ def normalizeRows(x):
     """
 
     ### YOUR CODE HERE
-    raise NotImplementedError
+    x = np.linalg.norm(x, axis=1, keepdims=True)
     ### END YOUR CODE
 
     return x
