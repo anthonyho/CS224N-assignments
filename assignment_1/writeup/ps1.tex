@@ -114,11 +114,11 @@
     \end{equation*}
 
     We can simpify (\ref{2b}) as:
-    \begin{align*}
+    \begin{equation*}
       \pd{\theta_i} \text{CE}(\bm{y}, \bm{\hat{y}})
-      &= - y_i + \f{e^{\theta_i}}{\sum_j e^{\theta_j}} \\
-      &= - y_i + \hat{y}_i 
-    \end{align*}
+      = - y_i + \f{e^{\theta_i}}{\sum_j e^{\theta_j}} 
+      = - y_i + \hat{y}_i 
+    \end{equation*}
 
     Thus, the gradient w.r.t the inputs of a softmax function when cross entropy loss
     is used for evaluation is:
@@ -151,18 +151,26 @@
       \pdd{\bm{\theta_2}}{\bm{h}} = \pd{\bm{h}} \left( \bm{h W_2} + \bm{b_2} \right) = \bm{W_2}^\top
     \end{equation*}
 
-    The third component uses the result of part (a):
+    The third component is a $H \times H$ matrix
+    and can be computed by examining its individual elements:
     \begin{equation*}
-      \pdd{\bm{h}}{\bm{\theta_1}} = \pdd{\sigma(\bm{\theta_1})}{\bm{\theta_1}} = \sigma'(\bm{\theta_1})
+      \left( \pdd{\bm{h}}{\bm{\theta_1}} \right)_{ij}
+      = \left( \pdd{\sigma(\bm{\theta_1})}{\bm{\theta_1}} \right)_{ij} 
+      = \pdd{\sigma({\theta_1}_i)}{{\theta_1}_j} = 
+      \begin{cases}
+        \sigma'({\theta_1}_i), & \text{if}\ i=j \\
+        0, & \text{otherwise}
+      \end{cases}
     \end{equation*}
-    where $\sigma'(\bm{\theta_1})$ denotes a $H \times H$ diagonal matrix where 
-    the diagonal elements are the derivatives of $\sigma(\bm{\theta_1})_{i}$ w.r.t. ${\theta_1}_i$, i.e.:
+    where $\sigma'({\theta_1}_i) = \sigma({\theta_1}_i) \left( 1 - \sigma({\theta_1}_i) \right)$
+    is the sigmoid gradient as shown in part (a).
+
+    Thus, we can define: 
     \begin{equation*}
-      \sigma'(\bm{\theta_1})_{ii}
-      = \pdd{\sigma(\bm{\theta_1})_{i}}{{\theta_1}_i}
-      = \pdd{\sigma({\theta_1}_i)}{{\theta_1}_i}
-      = \sigma({\theta_1}_i) \left( 1 - \sigma({\theta_1}_i) \right)
+      \pdd{\bm{h}}{\bm{\theta_1}} = \bm{S}(\bm{\theta_1})
     \end{equation*}
+    where $\bm{S}$ denotes a $H \times H$ diagonal matrix where 
+    the diagonal elements are $\sigma'(\theta_i)$ for $i = 1, \cdots, H$.
 
     The fourth component is similar to the second component:
     \begin{equation*}
@@ -173,8 +181,8 @@
     \begin{align*}
       \pdd{J}{\bm{x}}
       &= \pdd{\text{CE}(\bm{y}, \bm{\hat{y}})}{\bm{\theta_2}} \pdd{\bm{\theta_2}}{\bm{h}} \pdd{\bm{h}}{\bm{\theta_1}} \pdd{\bm{\theta_1}}{\bm{x}} \\
-      &= \left( \bm{\hat{y}} - \bm{y} \right) \bm{W_2}^\top \sigma'(\bm{\theta_1}) \bm{W_1}^\top \\
-      &= \left( \bm{\hat{y}} - \bm{y} \right) \bm{W_2}^\top \sigma'(\bm{x W_1} + \bm{b_1}) \bm{W_1}^\top
+      &= \left( \bm{\hat{y}} - \bm{y} \right) \bm{W_2}^\top \bm{S}(\bm{\theta_1}) \bm{W_1}^\top \\
+      &= \left( \bm{\hat{y}} - \bm{y} \right) \bm{W_2}^\top \bm{S}(\bm{x W_1} + \bm{b_1}) \bm{W_1}^\top
     \end{align*}
 
   %% Question 2(d)
