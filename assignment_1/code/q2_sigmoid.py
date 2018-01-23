@@ -35,6 +35,8 @@ def sigmoid_grad(s):
     """
 
     ### YOUR CODE HERE
+    # Use np.multiply instead of * just in case
+    # s is an instance of np.matrix instead of np.ndarray
     ds = np.multiply(s, 1 - s)
     ### END YOUR CODE
 
