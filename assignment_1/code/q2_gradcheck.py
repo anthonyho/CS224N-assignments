@@ -38,10 +38,13 @@ def gradcheck_naive(f, x):
 
         ### YOUR CODE HERE:
         random.setstate(rndstate)
-        ub = f(x[ix] + h)[0]
+        x[ix] += h
+        ub = f(x)[0]
         random.setstate(rndstate)
-        lb = f(x[ix] - h)[0]
+        x[ix] -= 2 * h
+        lb = f(x)[0]
         numgrad = (ub - lb) / (2 * h)
+        x[ix] += h
         ### END YOUR CODE
 
         # Compare gradients
