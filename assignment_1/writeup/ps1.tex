@@ -2,7 +2,7 @@
 %\documentclass[fleqn,10pt]{article}
 %\usepackage{simplemargins}
 %\setallmargins{1.0in}
-\documentclass[11pt,reqno]{amsart}
+\documentclass[10pt,reqno]{amsart}
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{amsthm}
@@ -280,7 +280,7 @@
       &= \left( \hat{y}_k - y_k \right) \bm{v}_c
     \end{align*}
 
-    Note that:
+    Specifically,
     \begin{equation*}
       \pd{\bm{u}_k} J_\text{softmax--CE} =
       \begin{cases}
@@ -336,6 +336,52 @@
 
   %% Question 3(d)
   \item
+    For skip-gram, the cost for a context centered around c is:
+    \begin{equation*}
+      J_\text{skip-gram}(w_{t-m},\cdots,w_{t+m})
+      = \sum_{-m \leq j \leq m, j \neq 0} F(w_{t+j}, \bm{v}_c)
+    \end{equation*}
+    where
+    \begin{equation*}
+      F(o, \bm{v}_c) = 
+      \begin{cases}
+        J_\text{softmax--CE}(o, \bm{v}_c, \cdots) = \text{CE}(\bm{y}, \bm{\hat{y}}) = - \displaystyle\sum_i^V y_i \log(\hat{y}_i), & \text{for softmax--CE loss} \\
+        J_\text{neg−-sample}(o, \bm{v}_c, \cdots) = -\log(\sigma(\bm{u}_o^\top \bm{v}_c)) - \displaystyle\sum_{k=1}^K \log(\sigma(-\bm{u}_k^\top \bm{v}_c)), & \text{for negative sampling loss}
+      \end{cases}
+    \end{equation*}
+
+    Therefore, the gradients w.r.t. the word vectors for the skip-gram model are:
+    \begin{align*}
+      \pd{\bm{v}_k} J_\text{skip-gram}(w_{t-m},\cdots,w_{t+m}) &= 
+      \begin{cases}
+        \displaystyle\sum_{-m \leq j \leq m, j \neq 0} \pdd{F(w_{t+j}, \bm{v}_c)}{\bm{v}_c}, & \text{if}\ k = c \\
+        \qquad\qquad\qquad 0, & \text{otherwise}
+      \end{cases}\\
+      \pd{\bm{u}_k} J_\text{skip-gram}(w_{t-m},\cdots,w_{t+m}) 
+      &= \sum_{-m \leq j \leq m, j \neq 0} \pdd{F(w_{t+j}, \bm{v}_c)}{\bm{u}_k} 
+    \end{align*}
+
+    For CBOW, the cost is:
+    \begin{equation*}
+      J_\text{CBOW}(w_{t-m},\cdots,w_{t+m}) = F(w_t, \bm{\hat{v}})
+    \end{equation*}
+    where
+    \begin{equation*}
+      \bm{\hat{v}} = \sum_{-m \leq j \leq m, j \neq 0} \bm{v}_{w_{t+j}}
+    \end{equation*}
+
+    Therefore, the gradients w.r.t. the word vectors for the CBOW model are:
+    \begin{align*}
+      \pd{\bm{v}_k} J_\text{CBOW}(w_{t-m},\cdots,w_{t+m}) &= 
+      \begin{cases}
+        \displaystyle\pdd{F(w_t, \bm{\hat{v}})}{\bm{\hat{v}}} \pdd{\bm{\hat{v}}}{\bm{v}_k} 
+        = \displaystyle\pdd{F(w_t, \bm{\hat{v}})}{\bm{\hat{v}}} , & \text{if}\ t-m \leq k \leq t+m\ \text{and}\ k \neq t\\
+        \qquad\qquad\qquad 0, & \text{otherwise}
+      \end{cases}\\
+      \pd{\bm{u}_k} J_\text{CBOW}(w_{t-m},\cdots,w_{t+m}) 
+      &= \pdd{F(w_t, \bm{\hat{v}})}{\bm{u}_k} 
+    \end{align*}
+    
   %% Question 3(e)
   \item
   %% Question 3(f)
