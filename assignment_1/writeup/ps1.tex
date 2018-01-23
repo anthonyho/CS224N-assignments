@@ -8,6 +8,7 @@
 \usepackage{amsthm}
 \usepackage{bm}
 \usepackage{enumitem}
+\usepackage{graphicx}
 \usepackage[paper=letterpaper,margin=0.75in]{geometry}
 \usepackage[all]{xy}
 
@@ -383,11 +384,25 @@
     \end{align*}
     
   %% Question 3(e)
-  \item
+  \item Please see the coding portion of the assignment.
   %% Question 3(f)
-  \item
+  \item Please see the coding portion of the assignment.
   %% Question 3(g)
+    \begin{figure}[hb]
+      \includegraphics[width=0.75\textwidth]{../code/q3_word_vectors.png}
+      \caption{Visualization for the word vectors.}
+      \label{fig1}
+    \end{figure}
   \item
+    Figure \ref{fig1} shows the visualization for the word vectors. 
+    First we can immediately notice it that all the adjectives cluster together, 
+    while articles and punctuations scatter around. 
+    Also, we observe that many pairs of adjectives that have opposite meanings 
+    form vectors that point to approximately the same direction, such as 
+    bad$\,\to\,$good, 
+    boring$\,\to\,$enjoyable,
+    dumb$\,\to\,$brilliant, and
+    waste$\,\to\,$worth.
   %% Question 3(h)
   \item
   \end{enumerate}
