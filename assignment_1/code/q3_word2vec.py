@@ -15,7 +15,7 @@ def normalizeRows(x):
     """
 
     ### YOUR CODE HERE
-    x = np.linalg.norm(x, axis=1, keepdims=True)
+    x = x / np.linalg.norm(x, axis=1, keepdims=True)
     ### END YOUR CODE
 
     return x
@@ -58,14 +58,11 @@ def softmaxCostAndGradient(predicted, target, outputVectors, dataset):
     """
 
     ### YOUR CODE HERE
-    # Compute y_hat and cost
     y_hat = softmax(np.dot(outputVectors, predicted)) # (V,)
     cost = - np.log(y_hat[target]) # scalar
     # Overwrite y_hat by (y_hat - y) for computational efficiency
     y_hat[target] -= 1 # (V,)
-    # Compute gradPred
     gradPred = np.dot(outputVectors.T, y_hat) # (N,)
-    # Compute grad
     grad = np.outer(y_hat, predicted) # (V, N)
     ### END YOUR CODE
 
@@ -104,7 +101,24 @@ def negSamplingCostAndGradient(predicted, target, outputVectors, dataset,
     indices.extend(getNegativeSamples(target, dataset, K))
 
     ### YOUR CODE HERE
-    raise NotImplementedError
+    # Construct U^T = [u_o, -u_k1, ..., -u_kK]^T
+    sampleVectors = - outputVectors[indices] # (K+1, N)
+    sampleVectors[0] *= -1 #(K+1, N)
+    
+    sigma = sigmoid(np.dot(sampleVectors, predicted)) # (K+1,)
+    cost = - np.sum(np.log(sigma)) # scalar 
+    gradPred = np.dot(sampleVectors.T, sigma - 1) # (N,)
+    # Construct sample gradient
+    sampleGrad = - np.outer(sigma - 1, predicted) # (K+1, N)
+    sampleGrad[0] *= -1 # (K+1, N)
+    # Construct empty full-size gradient
+    grad = np.zeros(outputVectors.shape) # (V, N)
+    # Replace sampled rows by sample gradient
+    grad[indices] = sampleGrad # (V, N)
+    # Count number of replicates for each index
+    numRep = np.bincount(indices, minlength=grad.shape[0]).reshape(-1, 1) # (V, 1)
+    # Total up the contribution of replicates for each index
+    grad *= numRep # (V, N)
     ### END YOUR CODE
 
     return cost, gradPred, grad
@@ -163,7 +177,7 @@ def cbow(currentWord, C, contextWords, tokens, inputVectors, outputVectors,
     gradOut = np.zeros(outputVectors.shape)
 
     ### YOUR CODE HERE
-    raise NotImplementedError
+    #raise NotImplementedError
     ### END YOUR CODE
 
     return cost, gradIn, gradOut
