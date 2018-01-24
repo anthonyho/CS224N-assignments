@@ -184,7 +184,15 @@ def cbow(currentWord, C, contextWords, tokens, inputVectors, outputVectors,
     gradOut = np.zeros(outputVectors.shape)
 
     ### YOUR CODE HERE
-    #raise NotImplementedError
+    center = tokens[currentWord]
+    contextInd = [tokens[word] for word in contextWords]
+    v_hat = np.sum(inputVectors[contextInd], axis=0)
+    results = word2vecCostAndGradient(v_hat, center, outputVectors, dataset)
+    cost = results[0]
+    gradIn[contextInd] = results[1]
+    numRep = np.bincount(contextInd, minlength=gradIn.shape[0]).reshape(-1, 1)
+    gradIn *= numRep
+    gradOut = results[2]
     ### END YOUR CODE
 
     return cost, gradIn, gradOut
