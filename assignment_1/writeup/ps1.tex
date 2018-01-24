@@ -12,6 +12,12 @@
 \usepackage[paper=letterpaper,margin=0.75in]{geometry}
 \usepackage[all]{xy}
 
+
+%% Quick fix for wrapping text within a table column
+\usepackage{array}
+\newcolumntype{L}{>{\centering\arraybackslash}m{3cm}}
+
+
 %% Define header
 \begin{document}
 \title{CS224n: Natural Language Processing with Deep Learning\\Assignment \#1}
@@ -396,8 +402,8 @@
   %% Question 3(f)
   \item Please see the coding portion of the assignment.
   %% Question 3(g)
-    \begin{figure}[h!]
-      \includegraphics[width=0.75\textwidth]{../code/q3_word_vectors.png}
+    \begin{figure}[h]
+      \includegraphics[width=0.6\textwidth]{../code/q3_word_vectors.png}
       \caption{Visualization for the word vectors.}
       \label{fig1}
     \end{figure}
@@ -426,14 +432,92 @@
     which would help increase prediction and generalization power to new datasets.
   %% Question 4(c)
   \item Please see the coding portion of the assignment.
+    
+    The code for \texttt{chooseBestModel} is as follow:
+  \begin{verbatim}
+    # Pick the result with the best validation accuracy
+    bestResult = max(results, key=lambda result: result['dev'])
+  \end{verbatim}
+
+
+  \begin{figure}[h]
+    \includegraphics[width=0.6\textwidth]{../code/q4_reg_v_acc.png}
+    \caption{Classification accuracy on the train and dev set with respect to the regularization value for the pretrained GloVe vectors.}
+    \label{fig2}
+  \end{figure}
+
   %% Question 4(d)
   \item
+    These regularization parameters were used:
+    \begin{equation*}
+      \lambda = [10^{-5}, 10^{-4}, 10^{-3}, 10^{-2}, 10^{-1}, 10^{0}, 10^{1}, 10^{2}, 10^{3}, 10^{4}, 10^{5}]
+    \end{equation*}
+    and the best train, dev, and test accuracies are as follows:
+    \vspace{1mm}
+    \begin{center}
+      \begin{tabular}{|c|c|c|}
+        \hline
+        Best accuracy & \texttt{--yourvectors} & \texttt{--pretrained} \\
+        \hline
+        train & 31.156 & 39.958 \\
+        dev & 32.698 & 36.876 \\
+        test & 30.271 & 37.692 \\
+        \hline
+      \end{tabular}
+    \end{center}
+    \vspace{1mm}
+    The pretrained vectors did better, because 
+    (1) the pretrained vectors has a much higher dimension ($N=50$) than the
+    word vector in q3 ($N=10$), which presumably would capture more information;
+    (2) the pretrained vectors were trained on many more samples (the whole Wikipedia dataset), 
+    versus the much smaller Stanford Sentiment Treebank dataset (only 19539 tokens);
+    (3) the pretrained vectors were trained with GloVe, which is probably better than skip-gram.
   %% Question 4(e)
   \item
+    Figure \ref{fig2} shows the classification accuracy on the train and dev set 
+    with respect to the regularization value for the pretrained GloVe vectors.
+    We can see that the train accuracy is always higher than the dev accuracy, which 
+    makes sense. We can also observe that the accuracies change relatively little when the 
+    regularization value is smaller than 1 but experience sharp dropoffs when it increases.
   %% Question 4(f)
-  \item
+    \begin{figure}[h!]
+      \includegraphics[width=0.6\textwidth]{../code/q4_dev_conf.png}
+      \caption{Confusion matrix for the pretrained GloVe vectors.}
+      \label{fig3}
+    \end{figure}
+  \item The confusion matrix is shown in figure \ref{fig3}. 
+    It looks like the classifier did a reasonably good job determining the 
+    general sentiment of sentence, i.e. whether a sentence is positive or not. 
+    It means that the classification accuracy would probably improve if this was 
+    implemented with only 3 classes ($+$, neutral, $-$) instead of 5 classes. 
+    Also, it looks like the classifier did not do a great job at classifying neutral samples, 
+    i.e. most neutral samples got classified as either positive or negative. 
   %% Question 4(g)
   \item
+    Here are 3 examples:
+    \begin{enumerate}
+      \item ``despite its title , punch-drunk love is never heavy-handed''\\
+        \\
+        Its true label is $+$ but it got classified as $-$, probably because of the word ``heavy-handed''. 
+        The problem may have been stemmed from the fact that averaging all word vectors within a sentence 
+        removes word order, and thus cannot process negation (the word ``never''). The classifier may 
+        benefit from features that take the nearby words (e.g. preceding ``not'' or ``never'') into account. 
+
+      \item ``instead , he shows them the respect they are due .''\\
+        \\
+        Its true label is $++$ but it got classified as $-$. It may have been classified as $-$ because of the word ``due'', 
+        but in reality it doesn't have too many strong sounding words. The classifier may benefit from learning phrases that
+        have specific meanings ``show respect that are due''. 
+
+      \item ``a movie that successfully crushes a best selling novel into a timeframe that mandates that you avoid the godzilla sized soda .''\\
+        \\
+        Its true label is $+$ but it got classified as $-$. It may have been classified as $-$ because of negative sounding words 
+        such as ``crushes'' and ``avoid''. To understand this sentence correctly, the classifier will need to be able to parse 
+        different parts of the sentence (e.g. ``a movie'', ``successfully crushes'', ``a best selling novel'') and perform
+        comparsions. 
+       
+    \end{enumerate}
+
   \end{enumerate}
 
 \end{enumerate}
