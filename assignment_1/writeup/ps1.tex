@@ -28,12 +28,12 @@
 
 %% Set up numbering environment
 \renewcommand{\labelenumi}{\arabic{enumi}.}
-\begin{enumerate}[topsep=0pt,itemsep=2ex,partopsep=1ex,parsep=1ex]
+\begin{enumerate}[topsep=0pt,itemsep=3ex,partopsep=1ex,parsep=1ex]
 
 
 %% Question 1
 \item
-  \begin{enumerate}
+  \begin{enumerate}[itemsep=2ex]
   %% Question 1(a)
   \item
     For any input vector $\bm{x}$ and any constant $c$,
@@ -58,7 +58,7 @@
 
 %% Question 2
 \item
-  \begin{enumerate}
+  \begin{enumerate}[itemsep=2ex]
   %% Question 2(a)
   \item 
     First, we can rearrange the definition of the sigmoid function to obtain:
@@ -157,6 +157,7 @@
     \begin{equation*}
       \left( \pdd{\bm{h}}{\bm{\theta_1}} \right)_{ij}
       = \left( \pdd{\sigma(\bm{\theta_1})}{\bm{\theta_1}} \right)_{ij} 
+      = \pdd{(\sigma(\bm{\theta_1}))_i}{{\theta_1}_j}
       = \pdd{\sigma({\theta_1}_i)}{{\theta_1}_j} = 
       \begin{cases}
         \sigma'({\theta_1}_i), & \text{if}\ i=j \\
@@ -186,6 +187,13 @@
       &= \left( \bm{\hat{y}} - \bm{y} \right) \bm{W_2}^\top \bm{S}(\bm{x W_1} + \bm{b_1}) \bm{W_1}^\top
     \end{align*}
 
+    Or, equivalently:
+    \begin{equation*}
+      \pdd{J}{\bm{x}} 
+      = \left( \bm{\hat{y}} - \bm{y} \right) \bm{W_2}^\top 
+      \circ \sigma(\bm{x W_1} + \bm{b_1}) \circ ( 1 - \sigma(\bm{x W_1} + \bm{b_1}) ) \bm{W_1}^\top
+    \end{equation*}
+    where $\circ$ denotes the Hadamard product of two vectors. 
   %% Question 2(d)
   \item
     The dimensions of the weights and biases are as follows:
@@ -219,7 +227,7 @@
 
 %% Question 3
 \item
-  \begin{enumerate}
+  \begin{enumerate}[itemsep=2ex]
   %% Question 3(a)
   \item
     Let's denote:
@@ -388,7 +396,7 @@
   %% Question 3(f)
   \item Please see the coding portion of the assignment.
   %% Question 3(g)
-    \begin{figure}[hb]
+    \begin{figure}[h!]
       \includegraphics[width=0.75\textwidth]{../code/q3_word_vectors.png}
       \caption{Visualization for the word vectors.}
       \label{fig1}
@@ -410,13 +418,14 @@
 
 %% Question 4
 \item
-  \begin{enumerate}
+  \begin{enumerate}[itemsep=2ex]
   %% Question 4(a)
-  \item
+  \item Please see the coding portion of the assignment.
   %% Question 4(b)
-  \item
+  \item Regularization helps prevent overfitting and reduce model complexity,
+    which would help increase prediction and generalization power to new datasets.
   %% Question 4(c)
-  \item
+  \item Please see the coding portion of the assignment.
   %% Question 4(d)
   \item
   %% Question 4(e)
