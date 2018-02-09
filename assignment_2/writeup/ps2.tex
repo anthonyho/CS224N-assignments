@@ -52,9 +52,18 @@
 
     Please see the coding portion of the assignment for implementation. 
   %% Question 1(d)
-  \item 
+  \item Please see the coding portion of the assignment.
   %% Question 1(e)
   \item 
+    When the model's \texttt{train\_op} is called, 
+    (1) it creates a gradient descent optimizer;
+    (2) it calls \texttt{add\_loss\_op} to compute the cross entropy loss based on 
+    the data, labels, and current values of the variables \texttt{W} and \texttt{b};
+    (3) it computes the gradients w.r.t the loss via automatic differentiation;
+    (4) and at the end it updates the values of the variables \texttt{W} and \texttt{b} in the direction
+    of the gradient and in proportion to the learning rate as defined in \texttt{Config}.
+    
+    Please see the coding portion of the assignment for implementation. 
   \end{enumerate}
 
 
