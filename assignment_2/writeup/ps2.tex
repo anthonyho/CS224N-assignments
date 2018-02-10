@@ -9,7 +9,7 @@
 \usepackage{bm}
 \usepackage{enumitem}
 \usepackage{graphicx}
-\usepackage[paper=letterpaper,margin=0.75in]{geometry}
+\usepackage[paper=letterpaper,margin=0.7in]{geometry}
 \usepackage[all]{xy}
 
 
@@ -71,7 +71,26 @@
 \item
   \begin{enumerate}[itemsep=2ex]
   %% Question 2(a)
-  \item 
+  \item The sequence of transitions are:
+    \vspace{1mm}
+    \begin{center}
+      \begin{tabular}{l|l|l|l}
+        stack & buffer & new dependency & transition \\
+        \hline
+        {[ROOT]} & [I, parsed, this, sentence, correctly] &  & Initial Configuration \\
+        {[ROOT, I]} & [parsed, this, sentence, correctly] &  & \texttt{SHIFT} \\
+        {[ROOT, I, parsed]} & [this, sentence, correctly] &  & \texttt{SHIFT} \\
+        {[ROOT, parsed]} & [this, sentence, correctly] & parsed$\to$I & \texttt{LEFT-ARC} \\
+        {[ROOT, parsed, this]} & [sentence, correctly] &  & \texttt{SHIFT} \\
+        {[ROOT, parsed, this, sentence]} & [correctly] &  & \texttt{SHIFT} \\
+        {[ROOT, parsed, sentence]} & [correctly] & sentence$\to$this  & \texttt{LEFT-ARC} \\
+        {[ROOT, parsed]} & [correctly] & parsed$\to$sentence  & \texttt{RIGHT-ARC} \\
+        {[ROOT, parsed, correctly]} & [] &  & \texttt{SHIFT} \\
+        {[ROOT, parsed]} & [] & parsed$\to$correctly & \texttt{RIGHT-ARC} \\
+        {[ROOT]} & [] & ROOT$\to$parsed & \texttt{RIGHT-ARC} \\
+      \end{tabular}
+    \end{center}
+    \vspace{1mm}
   %% Question 2(b)
   \item
   %% Question 2(c)
