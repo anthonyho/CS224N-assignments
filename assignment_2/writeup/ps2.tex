@@ -131,8 +131,6 @@
   \item Please see the coding portion of the assignment for implementation.
     The best UAS achieved on the dev set is 88.66 
     and the UAS achieved on the test is 89.17. 
-  %% Question 2(i)
-  \item 
   \end{enumerate}
 
 
@@ -141,6 +139,42 @@
   \begin{enumerate}[itemsep=2ex]
   %% Question 3(a)
   \item
+    \begin{enumerate}[itemsep=2ex]
+      \item Let's denote $k$ as the index for the target word. Since $\bm{y}^{(t)}$ is a 
+        one-hot vector:
+        \begin{equation}
+          \text{PP}^{(t)}\left(\bm{y}^{(t)}, \bm{\hat{y}}^{(t)}\right) 
+          = \f{1}{\sum^{|V|}_{j=1} y^{(t)}_i \cdot \hat{y}^{(t)}_i}
+          = \f{1}{\hat{y}^{(t)}_k} \label{3ai}
+        \end{equation}
+        and:
+        \begin{equation}
+          CE(\bm{y}^{(t)}, \bm{\hat{y}}^{(t)})
+          = - \sum^{|V|}_{j=1} y^{(t)}_i \log \hat{y}^{(t)}_i
+          = - \log \hat{y}^{(t)}_k \label{3aii}
+        \end{equation}
+        Therefore, combining equation (\ref{3ai}) and (\ref{3aii}):
+        \begin{equation}
+          CE(\bm{y}^{(t)}, \bm{\hat{y}}^{(t)})
+          = - \log \hat{y}^{(t)}_k
+          = - \log \f{1}{\text{PP}^{(t)}(\bm{y}^{(t)}, \bm{\hat{y}}^{(t)})}
+          = \log \text{PP}^{(t)}(\bm{y}^{(t)}, \bm{\hat{y}}^{(t)}) \label{3aiii}
+        \end{equation}
+      \item
+        We can rewrite the log of geometric mean perplexity using equation (\ref{3aiii}):
+        \begin{align*}
+          \log \left( \prod^T_{t=1} \text{PP}^{(t)}(\bm{y}^{(t)}, \bm{\hat{y}}^{(t)}) \right)^{1/T}
+          &= \f{1}{T} \log \left( \prod^T_{t=1} \text{PP}^{(t)}(\bm{y}^{(t)}, \bm{\hat{y}}^{(t)}) \right) \\
+          &= \f{1}{T} \sum^T_{t=1} \log \text{PP}^{(t)}(\bm{y}^{(t)}, \bm{\hat{y}}^{(t)}) \\
+          &= \f{1}{T} \sum^T_{t=1} CE(\bm{y}^{(t)}, \bm{\hat{y}}^{(t)})
+        \end{align*}
+        Since $\left( \prod^T_{t=1} \text{PP}^{(t)}(\bm{y}^{(t)}, \bm{\hat{y}}^{(t)}) \right)^{1/T}$ is 
+        a positive function, minimizing $\log \left( \prod^T_{t=1} \text{PP}^{(t)}(\bm{y}^{(t)}, \bm{\hat{y}}^{(t)}) \right)^{1/T}$
+        is equivalent to minimizing $\left( \prod^T_{t=1} \text{PP}^{(t)}(\bm{y}^{(t)}, \bm{\hat{y}}^{(t)}) \right)^{1/T}$ itself. 
+        Therefore, minimizing the geometric mean perplexity $\left( \prod^T_{t=1} \text{PP}^{(t)}(\bm{y}^{(t)}, \bm{\hat{y}}^{(t)}) \right)^{1/T}$
+        is equivalent to minimizing the arithmetic mean cross-entropy loss $\f{1}{T} \sum^T_{t=1} CE(\bm{y}^{(t)}, \bm{\hat{y}}^{(t)})$. 
+      \item
+    \end{enumerate}
   %% Question 3(b)
   \item
   %% Question 3(c)
