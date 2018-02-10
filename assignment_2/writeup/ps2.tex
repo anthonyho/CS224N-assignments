@@ -169,11 +169,18 @@
           &= \f{1}{T} \sum^T_{t=1} CE(\bm{y}^{(t)}, \bm{\hat{y}}^{(t)})
         \end{align*}
         Since $\left( \prod^T_{t=1} \text{PP}^{(t)}(\bm{y}^{(t)}, \bm{\hat{y}}^{(t)}) \right)^{1/T}$ is 
-        a positive function, minimizing $\log \left( \prod^T_{t=1} \text{PP}^{(t)}(\bm{y}^{(t)}, \bm{\hat{y}}^{(t)}) \right)^{1/T}$
-        is equivalent to minimizing $\left( \prod^T_{t=1} \text{PP}^{(t)}(\bm{y}^{(t)}, \bm{\hat{y}}^{(t)}) \right)^{1/T}$ itself. 
-        Therefore, minimizing the geometric mean perplexity $\left( \prod^T_{t=1} \text{PP}^{(t)}(\bm{y}^{(t)}, \bm{\hat{y}}^{(t)}) \right)^{1/T}$
-        is equivalent to minimizing the arithmetic mean cross-entropy loss $\f{1}{T} \sum^T_{t=1} CE(\bm{y}^{(t)}, \bm{\hat{y}}^{(t)})$. 
+        a positive function, minimizing 
+        $\log \left( \prod^T_{t=1} \text{PP}^{(t)}(\bm{y}^{(t)}, \bm{\hat{y}}^{(t)}) \right)^{1/T}$
+        is equivalent to minimizing 
+        $\left( \prod^T_{t=1} \text{PP}^{(t)}(\bm{y}^{(t)}, \bm{\hat{y}}^{(t)}) \right)^{1/T}$ itself. 
+        Therefore, minimizing the geometric mean perplexity 
+        $\left( \prod^T_{t=1} \text{PP}^{(t)}(\bm{y}^{(t)}, \bm{\hat{y}}^{(t)}) \right)^{1/T}$
+        is equivalent to minimizing the arithmetic mean cross-entropy loss 
+        $\f{1}{T} \sum^T_{t=1} CE(\bm{y}^{(t)}, \bm{\hat{y}}^{(t)})$. 
       \item
+        If $\bar{P}(\bm{x}^{(t+1)}_\text{pred} = \bm{x}^{(t+1)} | \bm{x}^{(t)}, \dots, \bm{x}^{(1)}) = 1/|V|$,
+        it means $\text{PP}^{(t)}(\bm{y}^{(t)}, \bm{\hat{y}}^{(t)}) = 1/(1/|V|) = |V|$. 
+        When $|V| = 10000$, the corresponding cross-entropy loss is $\log(10000) = 9.21$.
     \end{enumerate}
   %% Question 3(b)
   \item
