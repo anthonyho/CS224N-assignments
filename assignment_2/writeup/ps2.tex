@@ -122,7 +122,10 @@
         updates in $\bm{\theta}$ to maintain a relatively steady trajectory and prevents 
         the updates from ``diffusing around'' too much, and thus helps speeding up 
         reaching the local optimum. 
-      \item
+      \item Since Adam divides the updates by $\sqrt{\bm{v}}$, the model parameters that 
+        have smaller magnitudes will get larger updates. This might help with combating 
+        the ``saturated neurons'' problem by giving a ``boost'' to the updates of 
+        the parameters that are ``saturated'' to get out of the ``plateaus''.
     \end{enumerate}
   %% Question 2(h)
   \item Please see the coding portion of the assignment for implementation.
