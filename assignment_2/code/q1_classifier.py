@@ -99,10 +99,10 @@ class SoftmaxModel(Model):
             pred: A tensor of shape (batch_size, n_classes)
         """
         ### YOUR CODE HERE
-        W = tf.Variable(np.zeros((self.config.n_features, self.config.n_classes)),
-                        name='W', dtype=tf.float32)
-        b = tf.Variable(np.zeros((1, self.config.n_classes)),
-                        name='b', dtype=tf.float32)
+        W = tf.Variable(tf.zeros((self.config.n_features, self.config.n_classes)),
+                        name='W')
+        b = tf.Variable(tf.zeros((1, self.config.n_classes)),
+                        name='b')
         pred = softmax(tf.matmul(self.input_placeholder, W) + b)
         ### END YOUR CODE
         return pred
