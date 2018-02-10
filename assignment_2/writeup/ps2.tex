@@ -9,7 +9,7 @@
 \usepackage{bm}
 \usepackage{enumitem}
 \usepackage{graphicx}
-\usepackage[paper=letterpaper,margin=0.5in]{geometry}
+\usepackage[paper=letterpaper,margin=0.6in]{geometry}
 \usepackage[all]{xy}
 
 
@@ -116,7 +116,12 @@
   %% Question 2(g)
   \item 
     \begin{enumerate}[itemsep=2ex]
-      \item
+      \item By using $\bm{m}$ and a $\beta_1$ of 0.9, the new $\bm{\theta}$ would only 
+        be updated slightly towards the new direction and would be largely the same 
+        as the previous $\bm{\theta}$. It helps the 
+        updates in $\bm{\theta}$ to maintain a relatively steady trajectory and prevents 
+        the updates from ``diffusing around'' too much, and thus helps speeding up 
+        reaching the local optimum. 
       \item
     \end{enumerate}
   %% Question 2(h)
