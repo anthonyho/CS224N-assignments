@@ -299,7 +299,11 @@
       \mathcal{O}(T(D_h |V| + D_h d + D_h^2))
     \end{equation*}
   %% Question 3(f)
-  \item 
+  \item The term $D_h |V|$ is likely the largest, since presumably the size of the 
+    vocabulary $|V|$ is much larger than hidden layer size $D_h$ or the embedding size $d$.
+    The term corresponds to the RNN layer 
+    that computes $\bm{\hat{y}}^{(t)}$, i.e. the probabilities of each of the word in
+    the vocabulary being the next word. 
   \end{enumerate}
 
 
