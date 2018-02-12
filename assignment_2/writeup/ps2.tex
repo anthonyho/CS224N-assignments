@@ -257,9 +257,47 @@
       \in \mathbb{R}^{D_h \times D_h} 
     \end{align*}
   %% Question 3(d)
-  \item    
-  %% Question 3(e)
   \item 
+    To perform backpropagation for a single timestep, 
+    we will have to compute $\pdd{J^{(t)}}{\bm{U}}$,
+    $\left. \pdd{J^{(t)}}{\bm{W}_e} \right\rvert_{(t)}$,
+    $\left. \pdd{J^{(t)}}{\bm{W}_h} \right\rvert_{(t)}$,
+    $\pdd{J^{(t)}}{\bm{b}_1}$, and $\pdd{J^{(t)}}{\bm{b}_2}$. 
+    Since $\pdd{J^{(t)}}{\bm{b}_1} = \bm{\sigma}^{(t)}_2$ and $\pdd{J^{(t)}}{\bm{b}_2} = \bm{\sigma}^{(t)}_1$, 
+    their computations are implicit to the computations of
+    $\pdd{J^{(t)}}{\bm{U}}$,
+    $\left. \pdd{J^{(t)}}{\bm{W}_e} \right\rvert_{(t)}$, and 
+    $\left. \pdd{J^{(t)}}{\bm{W}_h} \right\rvert_{(t)}$ 
+    and thus won't contribute to the overall time complexity. 
+    The rest of the terms that involve matrix multiplications are as follows:
+    \vspace{1mm}
+    \begin{center}
+      \begin{tabular}{|c|c|c|}
+        \hline
+        Term & Matrix multiplication & Time complexity \\
+        \hline
+        $\bm{\sigma}^{(t)}_2$ & $\bm{U}^\top \left(\bm{\hat{y}}^{(t)} - \bm{y}^{(t)} \right)$ & $\mathcal{O}(D_h |V|)$ \\
+        $\pdd{J^{(t)}}{\bm{U}}$ & $\bm{\sigma}^{(t)}_1 \left(\bm{h}^{(t)}\right)^\top$ & $\mathcal{O}(D_h |V|)$ \\
+        $\left. \pdd{J^{(t)}}{\bm{W}_e} \right\rvert_{(t)}$ & $\bm{\sigma}^{(t)}_2 \left(\bm{e}^{(t)}\right)^\top$ & $\mathcal{O}(D_h d)$ \\
+        $\left. \pdd{J^{(t)}}{\bm{W}_h} \right\rvert_{(t)}$ & $\bm{\sigma}^{(t)}_2 \left(\bm{h}^{(t-1)}\right)^\top$ & $\mathcal{O}(D_h^2)$ \\
+        \hline
+      \end{tabular}
+    \end{center}
+    \vspace{1mm}
+    Therefore, given $\bm{h}^{(t-1)}$, the time complexity of performing backpropagation
+    for a single timestep is:
+    \begin{equation*}
+      \mathcal{O}(D_h |V| + D_h d + D_h^2)
+    \end{equation*}
+  %% Question 3(e)
+  \item Since we can store and reuse $\bm{\gamma}^{(t-i)}$ at each timestep, 
+    we will just have to repeat the single timestep in part (d) by $T$ times. 
+    Therefore, the time complexity of computing
+    the gradient of the loss w.r.t. the model parameters across 
+    the entire sequence is:
+    \begin{equation*}
+      \mathcal{O}(T(D_h |V| + D_h d + D_h^2))
+    \end{equation*}
   %% Question 3(f)
   \item 
   \end{enumerate}
