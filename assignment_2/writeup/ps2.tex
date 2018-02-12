@@ -184,6 +184,30 @@
     \end{enumerate}
   %% Question 3(b)
   \item
+    Let's denote:
+    \begin{align*}
+      \bm{z}^{(t)} &= \bm{W}_h \bm{h}^{(t-1)} + \bm{W}_e \bm{e}^{(t)} + \bm{b}_1 \in \mathbb{R}^{D_h} \\
+      \bm{\theta}^{(t)} &= \bm{U} \bm{h}^{(t)} + \bm{b}_2 \in \mathbb{R}^{|V|} 
+    \end{align*}
+    We can define and compute the values of the following error terms:
+    \begin{align*}
+      \bm{\sigma}^{(t)}_1 &= \pdd{J}{\bm{\theta}^{(t)}}
+      = \pdd{CE(\bm{y}^{(t)}, \bm{\hat{y}}^{(t)})}{\bm{\theta}^{(t)}}
+      = \bm{\hat{y}}^{(t)} - \bm{y}^{(t)} 
+      \in \mathbb{R}^{|V|} \\
+      \bm{\sigma}^{(t)}_2 &= \pdd{J}{\bm{z}^{(t)}}
+      = \bm{\sigma}^{(t)}_1 \pdd{\bm{\theta}^{(t)}}{\bm{h}^{(t)}} \pdd{\bm{h}^{(t)}}{\bm{z}^{(t)}}
+      = \bm{U}^\top \left(\bm{\hat{y}}^{(t)} - \bm{y}^{(t)} \right) \circ \sigma(\bm{z}^{(t)}) \circ (1 - \sigma(\bm{z}^{(t)}))
+      \in \mathbb{R}^{D_h}
+    \end{align*}
+    
+    Therefore, 
+    \begin{align*}
+      \pdd{J^{(t)}}{\bm{U}} &= \\
+      \pdd{J^{(t)}}{\bm{e}^{(t)}} &= \\
+      \left. \pdd{J^{(t)}}{\bm{W}_e} \right\rvert_{(t)} &= \\
+      \left. \pdd{J^{(t)}}{\bm{W}_h} \right\rvert_{(t)} &= 
+    \end{align*}
   %% Question 3(c)
   \item
   %% Question 3(d)
