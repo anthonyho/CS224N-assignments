@@ -189,6 +189,7 @@
       \bm{z}^{(t)} &= \bm{W}_h \bm{h}^{(t-1)} + \bm{W}_e \bm{e}^{(t)} + \bm{b}_1 \in \mathbb{R}^{D_h\times1} \\
       \bm{\theta}^{(t)} &= \bm{U} \bm{h}^{(t)} + \bm{b}_2 \in \mathbb{R}^{|V|\times1} 
     \end{align*}
+
     We can define and compute the values of the following error terms:
     \begin{align*}
       \bm{\sigma}^{(t)}_1 &= \pdd{J^{(t)}}{\bm{\theta}^{(t)}}
@@ -197,7 +198,7 @@
       \in \mathbb{R}^{|V|\times1} \\
       \bm{\sigma}^{(t)}_2 &= \pdd{J^{(t)}}{\bm{z}^{(t)}}
       = \bm{\sigma}^{(t)}_1 \pdd{\bm{\theta}^{(t)}}{\bm{h}^{(t)}} \pdd{\bm{h}^{(t)}}{\bm{z}^{(t)}}
-      = \bm{U}^\top \left(\bm{\hat{y}}^{(t)} - \bm{y}^{(t)} \right) \circ \sigma(\bm{z}^{(t)}) \circ (1 - \sigma(\bm{z}^{(t)}))
+      = \bm{U}^\top \left(\bm{\hat{y}}^{(t)} - \bm{y}^{(t)} \right) \circ \bm{h}^{(t)} \circ (1 - \bm{h}^{(t)})
       \in \mathbb{R}^{D_h\times1}
     \end{align*}
     
@@ -208,24 +209,53 @@
       = \bm{\sigma}^{(t)}_1 \left(\bm{h}^{(t)}\right)^\top
       \in \mathbb{R}^{|V|\times D_h} \\
       \pdd{J^{(t)}}{\bm{e}^{(t)}}
-      &= \pdd{J^{(t)}}{\bm{z}^{(t)}} \pdd{\bm{z}^{(t)}}{\bm{e}^{(t)}}
+      &= \pdd{J^{(t)}}{\bm{z}^{(t)}} \pdd{\bm{z}^{(t)}}{\bm{e}^{(t)}} 
       = \bm{W}_e^\top \bm{\sigma}^{(t)}_2 
       \in \mathbb{R}^{d\times 1} \\
       \left. \pdd{J^{(t)}}{\bm{W}_e} \right\rvert_{(t)}
-      &= \pdd{J^{(t)}}{\bm{z}^{(t)}} \pdd{\bm{z}^{(t)}}{\bm{W}_e} 
+      &= \pdd{J^{(t)}}{\bm{z}^{(t)}} \left. \pdd{\bm{z}^{(t)}}{\bm{W}_e} \right\rvert_{(t)}
       = \bm{\sigma}^{(t)}_2 \left(\bm{e}^{(t)}\right)^\top
       \in \mathbb{R}^{D_h \times d} \\
       \left. \pdd{J^{(t)}}{\bm{W}_h} \right\rvert_{(t)}
-      &= \pdd{J^{(t)}}{\bm{z}^{(t)}} \pdd{\bm{z}^{(t)}}{\bm{W}_h} 
+      &= \pdd{J^{(t)}}{\bm{z}^{(t)}} \left. \pdd{\bm{z}^{(t)}}{\bm{W}_h} \right\rvert_{(t)}
       = \bm{\sigma}^{(t)}_2 \left(\bm{h}^{(t-1)}\right)^\top
       \in \mathbb{R}^{D_h \times D_h} \\
       \pdd{J^{(t)}}{\bm{h}^{(t-1)}}
-      &= \pdd{J^{(t)}}{\bm{z}^{(t)}} \pdd{\bm{z}^{(t)}}{\bm{h}^{(t-1)}}
+      &= \pdd{J^{(t)}}{\bm{z}^{(t)}}  \pdd{\bm{z}^{(t)}}{\bm{h}^{(t-1)}} 
       = \bm{W}_h^\top \bm{\sigma}^{(t)}_2 
       \in \mathbb{R}^{D_h\times 1} 
     \end{align*}
   %% Question 3(c)
-  \item
+  \item The ``unrolled''network for 3 timesteps is shown in figure \ref{fig1}.
+    \begin{figure}[h]
+      \includegraphics[width=0.6\textwidth]{q3c.jpg}
+      \caption{The ``unrolled''network for 3 timesteps.}
+      \label{fig1}
+    \end{figure}
+
+    Let's compute the gradient of $J^{(t)}$ w.r.t. $\bm{z}^{(t-1)}$:
+    \begin{equation*}
+      \pdd{J^{(t)}}{\bm{z}^{(t-1)}} 
+      = \pdd{J^{(t)}}{\bm{h}^{(t-1)}} \pdd{\bm{h}^{(t-1)}}{\bm{z}^{(t-1)}}
+      = \bm{\gamma}^{(t-1)} \circ \bm{h}^{(t-1)} \circ (1 - \bm{h}^{(t-1)}) 
+      \in \mathbb{R}^{D_h\times 1} 
+    \end{equation*}
+
+    Therefore,
+    \begin{align*}
+      \pdd{J^{(t)}}{\bm{e}^{(t-1)}}
+      &= \pdd{J^{(t)}}{\bm{z}^{(t-1)}} \pdd{\bm{z}^{(t-1)}}{\bm{e}^{(t-1)}} 
+      = \bm{W}_e^\top \left( \bm{\gamma}^{(t-1)} \circ \bm{h}^{(t-1)} \circ (1 - \bm{h}^{(t-1)}) \right)
+      \in \mathbb{R}^{d\times 1} \\
+      \left. \pdd{J^{(t)}}{\bm{W}_e} \right\rvert_{(t-1)}
+      &= \pdd{J^{(t)}}{\bm{z}^{(t-1)}} \left. \pdd{\bm{z}^{(t-1)}}{\bm{W}_e} \right\rvert_{(t-1)}
+      = \left( \bm{\gamma}^{(t-1)} \circ \bm{h}^{(t-1)} \circ (1 - \bm{h}^{(t-1)}) \right) \left(\bm{e}^{(t-1)}\right)^\top
+      \in \mathbb{R}^{D_h \times d} \\
+      \left. \pdd{J^{(t)}}{\bm{W}_h} \right\rvert_{(t-1)}
+      &= \pdd{J^{(t)}}{\bm{z}^{(t-1)}} \left. \pdd{\bm{z}^{(t-1)}}{\bm{W}_h} \right\rvert_{(t-1)}
+      = \left( \bm{\gamma}^{(t-1)} \circ \bm{h}^{(t-1)} \circ (1 - \bm{h}^{(t-1)}) \right) \left(\bm{h}^{(t-2)}\right)^\top
+      \in \mathbb{R}^{D_h \times D_h} 
+    \end{align*}
   %% Question 3(d)
   \item    
   %% Question 3(e)
