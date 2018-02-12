@@ -186,27 +186,43 @@
   \item
     Let's denote:
     \begin{align*}
-      \bm{z}^{(t)} &= \bm{W}_h \bm{h}^{(t-1)} + \bm{W}_e \bm{e}^{(t)} + \bm{b}_1 \in \mathbb{R}^{D_h} \\
-      \bm{\theta}^{(t)} &= \bm{U} \bm{h}^{(t)} + \bm{b}_2 \in \mathbb{R}^{|V|} 
+      \bm{z}^{(t)} &= \bm{W}_h \bm{h}^{(t-1)} + \bm{W}_e \bm{e}^{(t)} + \bm{b}_1 \in \mathbb{R}^{D_h\times1} \\
+      \bm{\theta}^{(t)} &= \bm{U} \bm{h}^{(t)} + \bm{b}_2 \in \mathbb{R}^{|V|\times1} 
     \end{align*}
     We can define and compute the values of the following error terms:
     \begin{align*}
-      \bm{\sigma}^{(t)}_1 &= \pdd{J}{\bm{\theta}^{(t)}}
+      \bm{\sigma}^{(t)}_1 &= \pdd{J^{(t)}}{\bm{\theta}^{(t)}}
       = \pdd{CE(\bm{y}^{(t)}, \bm{\hat{y}}^{(t)})}{\bm{\theta}^{(t)}}
       = \bm{\hat{y}}^{(t)} - \bm{y}^{(t)} 
-      \in \mathbb{R}^{|V|} \\
-      \bm{\sigma}^{(t)}_2 &= \pdd{J}{\bm{z}^{(t)}}
+      \in \mathbb{R}^{|V|\times1} \\
+      \bm{\sigma}^{(t)}_2 &= \pdd{J^{(t)}}{\bm{z}^{(t)}}
       = \bm{\sigma}^{(t)}_1 \pdd{\bm{\theta}^{(t)}}{\bm{h}^{(t)}} \pdd{\bm{h}^{(t)}}{\bm{z}^{(t)}}
       = \bm{U}^\top \left(\bm{\hat{y}}^{(t)} - \bm{y}^{(t)} \right) \circ \sigma(\bm{z}^{(t)}) \circ (1 - \sigma(\bm{z}^{(t)}))
-      \in \mathbb{R}^{D_h}
+      \in \mathbb{R}^{D_h\times1}
     \end{align*}
     
     Therefore, 
     \begin{align*}
-      \pdd{J^{(t)}}{\bm{U}} &= \\
-      \pdd{J^{(t)}}{\bm{e}^{(t)}} &= \\
-      \left. \pdd{J^{(t)}}{\bm{W}_e} \right\rvert_{(t)} &= \\
-      \left. \pdd{J^{(t)}}{\bm{W}_h} \right\rvert_{(t)} &= 
+      \pdd{J^{(t)}}{\bm{U}}
+      &= \pdd{J^{(t)}}{\bm{\theta}^{(t)}} \pdd{\bm{\theta}^{(t)}}{\bm{U}}
+      = \bm{\sigma}^{(t)}_1 \left(\bm{h}^{(t)}\right)^\top
+      \in \mathbb{R}^{|V|\times D_h} \\
+      \pdd{J^{(t)}}{\bm{e}^{(t)}}
+      &= \pdd{J^{(t)}}{\bm{z}^{(t)}} \pdd{\bm{z}^{(t)}}{\bm{e}^{(t)}}
+      = \bm{W}_e^\top \bm{\sigma}^{(t)}_2 
+      \in \mathbb{R}^{d\times 1} \\
+      \left. \pdd{J^{(t)}}{\bm{W}_e} \right\rvert_{(t)}
+      &= \pdd{J^{(t)}}{\bm{z}^{(t)}} \pdd{\bm{z}^{(t)}}{\bm{W}_e} 
+      = \bm{\sigma}^{(t)}_2 \left(\bm{e}^{(t)}\right)^\top
+      \in \mathbb{R}^{D_h \times d} \\
+      \left. \pdd{J^{(t)}}{\bm{W}_h} \right\rvert_{(t)}
+      &= \pdd{J^{(t)}}{\bm{z}^{(t)}} \pdd{\bm{z}^{(t)}}{\bm{W}_h} 
+      = \bm{\sigma}^{(t)}_2 \left(\bm{h}^{(t-1)}\right)^\top
+      \in \mathbb{R}^{D_h \times D_h} \\
+      \pdd{J^{(t)}}{\bm{h}^{(t-1)}}
+      &= \pdd{J^{(t)}}{\bm{z}^{(t)}} \pdd{\bm{z}^{(t)}}{\bm{h}^{(t-1)}}
+      = \bm{W}_h^\top \bm{\sigma}^{(t)}_2 
+      \in \mathbb{R}^{D_h\times 1} 
     \end{align*}
   %% Question 3(c)
   \item
