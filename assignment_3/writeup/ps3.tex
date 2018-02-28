@@ -54,11 +54,22 @@
       \item
         Feature 1: the feature ``in'' that immediately preceded a word could be helpful 
         for identifying the word as a location.
+
         Feature 2: an action verb that immediately succeeded a word could be helpful 
         for identifying the word as a named entity.
     \end{enumerate}
   %% Question 1(b)
   \item 
+    \begin{enumerate}[itemsep=2ex]
+      \item The dimensions are:
+        \begin{align*}
+          \bm{e}^{(t)} \in \mathbb{R}^{1 \times D(2w+1)} \\
+          W \in \mathbb{R}^{D(2w+1) \times H} \\
+          U \in \mathbb{R}^{H \times C} 
+        \end{align*}
+      \item The computational complexity of predicting labels for a sentence of length $T$ is
+        $\mathcal{O}(T (D(2w+1)H + HC))$.
+    \end{enumerate}
   %% Question 1(c)
   \item %Please see the coding portion of the assignment.
   %% Question 1(d)
