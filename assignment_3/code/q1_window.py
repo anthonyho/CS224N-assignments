@@ -107,11 +107,8 @@ def make_windowed_data(data, start, end, window_size = 1):
             for word in sentence[start_ind:end_ind+1]:
                 word_window += word
             word_window = start * n_starts + word_window + end * n_ends
-            print word_window
             word_data = (word_window, label)
-            print word_data
             windowed_data.append(word_data)
-        print windowed_data
 		### END YOUR CODE
     return windowed_data
 
