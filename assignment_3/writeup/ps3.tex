@@ -170,6 +170,35 @@
   \item Please see the coding portion of the assignment.
   %% Question 2(g)
   \item 
+    \begin{enumerate}[itemsep=2ex]
+      \item 
+        (1) This RNN model could suffer from the vanishing gradient problem, which means that long-range information 
+        might not be taken into account. An example of this from the model's output is shown below
+        (truncated since it's too long to fit):
+        \begin{verbatim}
+x : Automakers petitioned the National Highway Traffic Safety Administration to allow ...
+y*: O          O          O   ORG      ORG     ORG     ORG    ORG            O  O     ...
+y': O          O          O   ORG      ORG     ORG     ORG    O              O  O     ...
+        \end{verbatim}
+        We can see that the model fails to consider ``Administration'' as part of a very long organization name, 
+        which suggests the vanishing gradient problem is an issue with this model.
+        
+        (2) This RNN model is unidirectional, which means information that happens after a word is not 
+        taken into account. An example of this from the model's output is shown below
+        (truncated since it's too long to fit):
+        \begin{verbatim}
+x : Jordan , whose 1992 film `` The  Crying Game `` also came under fire for what was ...
+y*: PER    O O     O    O    O MISC MISC   MISC O O    O    O     O    O   O    O   O ...
+y': LOC    O O     O    O    O O    MISC   MISC O O    O    O     O    O   O    O   O ...
+        \end{verbatim}
+        We can see that the model fails to classify ``Jordan'' as a person, even though it is immediately 
+        succeeded by ``whose'', which highly suggests ``Joran'' is a person. This seems to be especially a 
+        problem with the first few words in a sentence. 
+      \item
+        (1) LSTM or GRU
+
+        (2) Bidirectional RNN
+    \end{enumerate}
   \end{enumerate}
 
 
@@ -195,7 +224,7 @@
   %% Question 3(e)
   \item 
   %% Question 3(f)
-  \item %Please see the coding portion of the assignment.
+  \item Please see the coding portion of the assignment.
   \end{enumerate}
 
 
