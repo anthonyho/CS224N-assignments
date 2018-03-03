@@ -191,11 +191,10 @@ class WindowModel(NERModel):
             embeddings: tf.Tensor of shape (None, n_window_features*embed_size)
         """
         ### YOUR CODE HERE (!3-5 lines)
-        E = tf.Variable(self.pretrained_embeddings, name='E')
+        E = tf.Variable(self.pretrained_embeddings)
         embeddings = tf.nn.embedding_lookup(E, self.input_placeholder)
         embeddings = tf.reshape(embeddings,
-                                shape=(-1, self.config.n_window_features * self.config.embed_size),
-                                name='x')
+                                shape=(-1, self.config.n_window_features * self.config.embed_size))
         ### END YOUR CODE
         return embeddings
 
@@ -229,11 +228,11 @@ class WindowModel(NERModel):
         dm = self.config.n_window_features * self.config.embed_size
         W = tf.get_variable('W', shape=(dm, self.config.hidden_size),
                             initializer=tf.contrib.layers.xavier_initializer())
-        b1 = tf.get_variable('b1', shape=(1, self.config.hidden_size),
+        b1 = tf.get_variable('b1', shape=(self.config.hidden_size),
                              initializer=tf.zeros_initializer())
         U = tf.get_variable('U', shape=(self.config.hidden_size, self.config.n_classes),
                             initializer=tf.contrib.layers.xavier_initializer())
-        b2 = tf.get_variable('b2', shape=(1, self.config.n_classes),
+        b2 = tf.get_variable('b2', shape=(self.config.n_classes),
                              initializer=tf.zeros_initializer())
         h = tf.nn.relu(tf.matmul(x, W) + b1, name='h')
         h_drop = tf.nn.dropout(h, dropout_rate, name='h_drop')
