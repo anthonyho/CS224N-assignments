@@ -87,8 +87,7 @@ class SequencePredictor(Model):
 
         x = self.inputs_placeholder
         ### YOUR CODE HERE (~2-3 lines)
-        output, state = tf.nn.dynamic_rnn(cell, x,
-                                          dtype=tf.float32)
+        output, state = tf.nn.dynamic_rnn(cell, x, dtype=tf.float32)
         preds = tf.sigmoid(state)
         ### END YOUR CODE
 
