@@ -89,20 +89,21 @@
           \begin{tabular}{c|c|c|c|c|c}
              & PER  &   ORG  &   LOC  &   MISC  &  O       \\
             \hline
-            PER  &   2899.00 & 51.00   & 88.00   & 22.00    & 89.00   \\
+            PER  &    2958.00 & 51.00   & 61.00   & 10.00  &  69.00   \\
             \hline
-            ORG  &   125.00  & 1668.00 & 95.00   & 72.00    & 132.00  \\
+            ORG  &    139.00  & 1659.00 & 120.00  & 47.00  &  127.00  \\
             \hline
-            LOC  &   31.00   & 112.00  & 1867.00 & 30.00    & 54.00   \\
+            LOC  &    48.00   & 148.00  & 1843.00 & 19.00  &  36.00   \\
             \hline
-            MISC &   31.00   & 43.00   & 41.00   &  1037.00 &  116.00  \\
+            MISC &    44.00   & 71.00   & 46.00   & 995.00 &  112.00  \\
             \hline
-            O    &   33.00   & 42.00   & 18.00   &  34.00   &  42632.00
+            O    &    49.00   & 50.00   & 17.00   & 30.00  &  42613.00
           \end{tabular}
         \end{center}
         \vspace{1mm}
         From the confusion matrix, it looks like the model has a tendency to misclassify 
-        organization as person or null, location as organization, and miscellaneous as null.
+        organization as person, location or null, to misclassify location as organization,
+        and to misclassify miscellaneous as null.
       \item
         (1) A window-based model would have troubles identifying named entities longer than
         the window itself. For example, the prediction made by our model 
@@ -130,16 +131,43 @@
   \begin{enumerate}[itemsep=2ex]
   %% Question 2(a)
   \item 
+    \begin{enumerate}[itemsep=2ex]
+      \item This particular RNN model does not necessarily have more parameters in 
+        comparison to the window-based model, since the window-based model has a 
+        bigger $W$ (due to a bigger window) than the RNN's model's $W_e$, while the RNN model 
+        has the additional parameter $W_h$.
+        The difference in number of parameters between the RNN model over 
+        the window-based model is $H^2 - 2wDH$.
+      \item The computational complexity mainly depends on the sizes of the 
+        matrix multiplications and scales linearly to the number of time steps.
+        Thus, the computational complexity of predicting labels for a sentence of length $T$
+        with the RNN model is $\mathcal{O}(T(H^2+DH+CH))$.
+    \end{enumerate}
   %% Question 2(b)
   \item 
+    \begin{enumerate}[itemsep=2ex]
+      \item Since the cross-entropy cost is computed at the token level, its minimization
+        does not guarantee the minimization of the entity-level $F_1$ score, such as when there 
+        are multi-word entities in the training data. 
+      \item $F_1$ score is not additive over training samples like cross-entropy cost, which makes 
+        it difficult to be used in stochastic gradient descent during optimization (e.g. can't 
+        compute the $F_1$ score of the full training data from the $F_1$ scores of the individual minibatches).
+    \end{enumerate}
   %% Question 2(c)
-  \item %Please see the coding portion of the assignment.
+  \item Please see the coding portion of the assignment.
   %% Question 2(d)
   \item 
+    \begin{enumerate}[itemsep=2ex]
+      \item If we did not use masking, the loss would be contaminated by the cross-entropy cost 
+        associated with the \texttt{NULL} tokens and the zero label, which effectively decreases the signal-to-noise 
+        of the loss function. It could negatively affect learning, especially  when the maximum sentence length is far greater than 
+        the average sentence length. 
+      \item Please see the coding portion of the assignment.
+    \end{enumerate}
   %% Question 2(e)
-  \item %Please see the coding portion of the assignment.
+  \item Please see the coding portion of the assignment.
   %% Question 2(f)
-  \item %Please see the coding portion of the assignment.
+  \item Please see the coding portion of the assignment.
   %% Question 2(g)
   \item 
   \end{enumerate}
@@ -150,10 +178,18 @@
   \begin{enumerate}[itemsep=2ex]
   %% Question 3(a)
   \item 
+    \begin{enumerate}[itemsep=2ex]
+      \item
+      \item 
+    \end{enumerate}
   %% Question 3(b)
   \item
+    \begin{enumerate}[itemsep=2ex]
+      \item
+      \item 
+    \end{enumerate}
   %% Question 3(c)
-  \item %Please see the coding portion of the assignment.
+  \item Please see the coding portion of the assignment.
   %% Question 3(d)
   \item %Please see the coding portion of the assignment.
   %% Question 3(e)
