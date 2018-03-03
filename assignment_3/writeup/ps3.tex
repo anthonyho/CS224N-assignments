@@ -225,12 +225,38 @@ y': LOC    O O     O    O    O O    MISC   MISC O O    O    O     O    O   O    
   %% Question 3(c)
   \item Please see the coding portion of the assignment.
   %% Question 3(d)
-  \item %Please see the coding portion of the assignment.
+  \item Please see the coding portion of the assignment for implementation.
+    The plots of learning dynamics are shown in figure (\ref{fig1})--(\ref{fig4}).
+    \begin{figure}[h]
+      \includegraphics[width=0.6\textwidth]{../code/q3-noclip-rnn.png}
+      \caption{Plots of learning dynamics generated for a RNN without gradient clipping.}
+      \label{fig1}
+    \end{figure}
+    \begin{figure}[h]
+      \includegraphics[width=0.6\textwidth]{../code/q3-clip-rnn.png}
+      \caption{Plots of learning dynamics generated for a RNN with gradient clipping.}
+      \label{fig2}
+    \end{figure}
+    \begin{figure}[h]
+      \includegraphics[width=0.6\textwidth]{../code/q3-noclip-gru.png}
+      \caption{Plots of learning dynamics generated for a GRU without gradient clipping.}
+      \label{fig3}
+    \end{figure}
+    \begin{figure}[h]
+      \includegraphics[width=0.6\textwidth]{../code/q3-clip-gru.png}
+      \caption{Plots of learning dynamics generated for a GRU with gradient clipping.}
+      \label{fig4}
+    \end{figure}
   %% Question 3(e)
   \item 
     \begin{enumerate}[itemsep=2ex]
-      \item
-      \item 
+      \item Both RNN models experience vanishing gradients and plateau at a final 
+        loss of 12.4978. Gradient clipping does not help with the vanishing gradients problem. 
+        Both GRU models experience exploding gradients at around timestep 1100, but in this case 
+        gradient clipping helps bring the problem under control. 
+      \item The GRU model with gradient clipping performs the best, 
+        arriving at a final loss of 8.0668. It is likely because the model is equipped to handle both 
+        vanishing gradients (GRU) and exploding gradients (gradient clipping) problems. 
     \end{enumerate}
   %% Question 3(f)
   \item Please see the coding portion of the assignment.
