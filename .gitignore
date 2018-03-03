@@ -1,5 +1,5 @@
 *~
-*aux
-*log
+*.aux
+*.log
 */code/utils/datasets/*
 *pyc
